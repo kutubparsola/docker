@@ -1,0 +1,16 @@
+FROM python:3.9-slim
+WORKDIR /app
+RUN useradd -r appuser && groupadd -r appuser
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+RUN chown -R appuser:appuser /app
+USER appuser
+EXPOSE 5000
+CMD [ "python3","app.py" ]
+
+# groupadd -r and useradd -r: The -r flag creates system accounts without interactive shell logins or standard home directories, ideal for background services.
+
+# chown -R appuser:appuser /app: Must be executed before switching users, while Docker is still running commands as root.
+
+# USER appuser: Instructs Docker to run all subsequent instructions and the final runtime CMD as appuser.
