@@ -1,0 +1,28 @@
+services:
+  webapp:
+    build: .
+    image: python_app_img
+    container_name: python_app_con
+    volumes:
+      - pythonvol:/app/logs
+    ports:
+      - 5000:5000
+    depends_on:
+      - redis_img
+
+  redis_img:
+    image: redis:8-alpine
+    container_name: redis_con
+  volumes:
+    - pythonvol:{}
+
+# mistakes:
+# 1. passed the wrong version of the python till now it is 3 and i passed 21(so dumbbb)
+# 2.port mapping should be ports: - 5000:5000 but i did 5000 and did not another pass another port which helps to map with which pory of the host computer configs:
+# 3.in volumes i didnt pass the path so its volumes: -volname:path you pass to mount with configs:
+# 4.volumes: pythonvol{} (this is wrong format)
+# learnings:
+
+# webapps: and image: is used to name where webapp is used to name the service so when you do curl www.webapps:5000 it will repond on the same way  image is used to name the image that you built it will be staored with the image name you gave
+
+# depends-on: says  that if the the mentioned container starts then only this container will start here if the redis manages to start successfully then only the python will start else not 
