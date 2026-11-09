@@ -1,0 +1,11 @@
+FROM golang:1.21 as build_image
+WORKDIR /app
+COPY . .
+RUN go build -o main main.go
+
+FROM alpine:latest
+WORKDIR /app
+# Copy ONLY the compiled binary from the build stage into this stage
+COPY --from=build_image /app/main .
+EXPOSE 8080
+CMD [ "./main" ]

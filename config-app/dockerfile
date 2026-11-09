@@ -1,0 +1,12 @@
+FROM python:3.9-slim
+LABEL "project"="config-app"
+WORKDIR /app
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+ENV "USER_NAME"="docker-master" 
+# learnt 
+EXPOSE 5000
+CMD [ "python3","app.py" ]
+
+# build Cache Optimization (Bonus tip): You wrote COPY . . before RUN pip install. As we discussed earlier, copying everything first means Docker has to reinstall your Python packages every single time you change a single line of text in your code. Copying just the requirements file first keeps your builds fast!
